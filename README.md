@@ -1,16 +1,28 @@
 # erx-sfp
 Configuration files for my erx-sfp router from Ubiquiti.
 
-## Scripting
+## How to obtain Vodafone VFHXXXXXXXXXX/XXXXXXXXX host name (cable modem Technicolor TC7200)
+```
+wget -q -O - http://192.168.0.1/goform/system/GatewaySettings.bin | strings | grep 'VFH'
+```
+Then check your monthly bill and get your client number. It is a 9 digit number. Now you know your hostname: 
+```
+vfh_str_from_bin/client_number
+```
+You can send this hostname as a dhcp client option, so you do not need to change 
+your router hostname to a not valid string.
 
-Set commands mode:
+## CLI
+How to use operational model in scripts:
 ```
 #!/bin/bash
 run=/opt/vyatta/bin/vyatta-op-cmd-wrapper
+.
 $run show version
+.
 ```
 
-Set configuration mode
+How to use configuration mode in scripts:
 ```
 #!/bin/bash
 source /opt/vyatta/etc/functions/script-template
@@ -23,7 +35,7 @@ save
 exit
 ```
 
-## Update firmware by cli
+## Update firmware
 ```
 add system image https://dl.ubnt.com/firmwares/edgemax/v1.9.1.1/ER-e50.v1.9.1.1.4977602.tar
 show system image storage
