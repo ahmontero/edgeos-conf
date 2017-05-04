@@ -9,13 +9,21 @@ set system conntrack modules pptp disable
 set system conntrack modules sip disable
 set system conntrack modules tftp disable
 
+set system conntrack timeout tcp close 10
+set system conntrack timeout tcp close-wait 10
+set system conntrack timeout tcp established 86400
+set system conntrack timeout tcp fin-wait 10
+set system conntrack timeout tcp last-ack 10
+set system conntrack timeout tcp syn-recv 5
+set system conntrack timeout tcp syn-sent 5
+set system conntrack timeout tcp time-wait 10
+set system conntrack timeout udp other 10
+set system conntrack timeout udp stream 180
+
+set system offload hwnat enable
+
 set system host-name bastion
 set system name-server 8.8.8.8
-set system ntp server 0.pool.ntp.org
-set system ntp server 1.pool.ntp.org
-set system ntp server 2.pool.ntp.org
-set system ntp server 3.pool.ntp.org
-set system offload hwnat enable
 set system time-zone Europe/Madrid
 
 commit
