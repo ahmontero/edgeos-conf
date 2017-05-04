@@ -2,7 +2,7 @@
 Configuration files to set TC7200 in bridge mode and use EdgeRouter as main router.
 Validated for these versions:
 ```
-EdgeRouter firmware version: 1.9.1
+EdgeRouter firmware version: 1.9.1.1
 TC7200 firmware version: STEB.80.15
 ```
 
