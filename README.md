@@ -8,7 +8,7 @@ TC7200 firmware version: STEB.80.15
 
 ## How to configure bridge mode in cable modem Technicolor TC7200 (Vodafone Ono ES)
 ```
-git@github.com:ahmontero/erx-sfp.git
+git clone git@github.com:ahmontero/erx-sfp.git
 cd erx-sfp
 pip install -r requirements.txt
 python vfh.py 192.168.0.1
