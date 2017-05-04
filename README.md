@@ -1,18 +1,51 @@
 # erx-sfp
-Configuration files for my erx-sfp router from Ubiquiti.
+Configuration files to set TC7200 in bridge mode and use EdgeRouter as main router.
+Validated for these versions:
+```
+EdgeRouter firmware version: 1.9.1
+TC7200 firmware version: STEB.80.15
+```
 
-## How to obtain Vodafone VFHXXXXXXXXXX/XXXXXXXXX host name (cable modem Technicolor TC7200)
+## How to configure bridge mode in cable modem Technicolor TC7200 (Vodafone Ono ES)
 ```
-wget -q -O - http://192.168.0.1/goform/system/GatewaySettings.bin | strings | grep 'VFH'
+git@github.com:ahmontero/erx-sfp.git
+cd erx-sfp
+pip install -r requirements.txt
+python vfh.py 192.168.0.1
 ```
-Then check your monthly bill and get your client number. It is a 9 digit number. Now you know your hostname: 
+1. Annotate the output of the command
+2. Check your monthly bill and get your client number. It is a 9 digit number. 
+
+Your hostname is something like:
 ```
-vfh_str_from_bin/client_number
+{vfh_from_command}/{client_number}
 ```
 You can send this hostname as a dhcp client option, so you do not need to change 
 your router hostname to a not valid string.
+```
+set interfaces ethernet eth0 dhcp-options client-option "send host-name &quot;VFHXXXXXXXXXX/XXXXXXXXX&quot;;"
+```
 
-## CLI
+Example:
+```
+set interfaces ethernet eth0 dhcp-options client-option "send host-name &quot;VFH0123456789/012345678&quot;;" 
+```
+
+Now you need to configure bridge mode in modem router. 
+```
+1. Unplug EdgeRouter from modem cable
+2. Plug your laptop to any port in cable modem
+3. Login into cable modem: 192.168.0.1 vodafone/vodafone
+4. Set Expert mode. 
+5. Configuration -> Bridge Mode -> Select Disable
+6. Reboot modem cable and wait until all lights are on
+7. Connect EdgeRouter to Lan Port 1 in modem cable
+```
+
+Sometimes you need to wait a few minutes to get an external ip from the ISP. If you can not get the correct ip after 
+few minutes, you can refresh ip from EdgeRouter or reboot it.
+
+## EdgeOS tips
 How to use operational model in scripts:
 ```
 #!/bin/bash

