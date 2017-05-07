@@ -27,6 +27,16 @@ delete interfaces ethernet eth5 vif 30 address
 set interfaces ethernet eth5 vif 30 address 10.10.30.1/24
 set interfaces ethernet eth5 vif 30 description 'WLAN_MANAGEMENT'
 
+set interfaces ethernet eth0 mtu 1500
+set interfaces ethernet eth1 mtu 1500
+set interfaces ethernet eth2 mtu 1500
+set interfaces ethernet eth3 mtu 1500
+set interfaces ethernet eth4 mtu 1500
+set interfaces ethernet eth5 mtu 1500
+set interfaces ethernet eth5 vif 10 mtu 1500
+set interfaces ethernet eth5 vif 20 mtu 1500
+set interfaces ethernet eth5 vif 30 mtu 1500
+
 commit
 save
 exit
