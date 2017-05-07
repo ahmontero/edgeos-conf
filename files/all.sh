@@ -9,18 +9,92 @@ set system conntrack modules pptp disable
 set system conntrack modules sip disable
 set system conntrack modules tftp disable
 
+set system conntrack timeout tcp close 10
+set system conntrack timeout tcp close-wait 10
+set system conntrack timeout tcp established 86400
+set system conntrack timeout tcp fin-wait 10
+set system conntrack timeout tcp last-ack 10
+set system conntrack timeout tcp syn-recv 5
+set system conntrack timeout tcp syn-sent 5
+set system conntrack timeout tcp time-wait 10
+set system conntrack timeout udp other 30
+set system conntrack timeout udp stream 180
+
+set system offload hwnat enable
+
 set system host-name bastion
 set system name-server 8.8.8.8
-set system ntp server 0.pool.ntp.org
-set system ntp server 1.pool.ntp.org
-set system ntp server 2.pool.ntp.org
-set system ntp server 3.pool.ntp.org
-set system offload hwnat enable
+set system name-server 8.8.4.4
 set system time-zone Europe/Madrid
+
+delete interfaces ethernet eth0 address
+set interfaces ethernet eth0 address dhcp
+set interfaces ethernet eth0 description WAN
+set interfaces ethernet eth0 mac AA:AA:AA:AA:AA:AA
+set interfaces ethernet eth0 dhcp-options client-option "send host-name &quot;VFHXXXXXXXXXX/XXXXXXXXX&quot;;"
+
+delete interfaces ethernet eth4 address
+set interfaces ethernet eth4 address 10.10.50.1/24
+set interfaces ethernet eth4 description 'ERX_MANAGEMENT'
+
+delete interfaces ethernet eth5 address
+set interfaces ethernet eth5 description 'TRUNK'
+
+delete interfaces ethernet eth5 vif 10 address
+set interfaces ethernet eth5 vif 10 address 10.10.10.1/24
+set interfaces ethernet eth5 vif 10 description 'LAN'
+
+delete interfaces ethernet eth5 vif 20 address
+set interfaces ethernet eth5 vif 20 address 10.10.20.1/24
+set interfaces ethernet eth5 vif 20 description 'WLAN'
+
+delete interfaces ethernet eth5 vif 30 address
+set interfaces ethernet eth5 vif 30 address 10.10.30.1/24
+set interfaces ethernet eth5 vif 30 description 'WLAN_MANAGEMENT'
 
 set service gui older-ciphers disable
 set service ssh protocol-version v2
 set service ubnt-discover disable
+
+set service nat rule 1 description "Masquerade from LAN to eth0 WAN"
+set service nat rule 1 source address 10.10.0.0/16
+set service nat rule 1 type masquerade
+set service nat rule 1 outbound-interface eth0
+set service nat rule 1 protocol all
+set service nat rule 1 log disable
+
+set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 default-router 10.10.50.1
+set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 dns-server 8.8.8.8
+set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 dns-server 8.8.4.4
+set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 start 10.10.50.10 stop 10.10.50.100
+set service dhcp-server shared-network-name ERX_MANAGEMENT description 'ERX_MANAGEMENT'
+set service dns forwarding listen-on eth4
+
+set service dhcp-server shared-network-name LAN description 'LAN'
+set service dhcp-server shared-network-name LAN subnet 10.10.10.0/24 default-router 10.10.10.1
+set service dhcp-server shared-network-name LAN subnet 10.10.10.0/24 dns-server 8.8.8.8
+set service dhcp-server shared-network-name LAN subnet 10.10.10.0/24 dns-server 8.8.4.4
+set service dhcp-server shared-network-name LAN subnet 10.10.10.0/24 start 10.10.10.10 stop 10.10.10.100
+
+set service dhcp-server shared-network-name WLAN description 'WLAN'
+set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 default-router 10.10.20.1
+set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 dns-server 8.8.8.8
+set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 dns-server 8.8.4.4
+set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 start 10.10.20.10 stop 10.10.20.100
+
+set service dhcp-server shared-network-name WLAN_MANAGEMENT description 'WLAN_MANAGEMENT'
+set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 default-router 10.10.30.1
+set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 dns-server 8.8.8.8
+set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 dns-server 8.8.4.4
+set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 start 10.10.30.10 stop 10.10.30.100
+
+set service dns forwarding listen-on eth5
+set service dns forwarding listen-on eth5.10
+set service dns forwarding listen-on eth5.20
+set service dns forwarding listen-on eth5.30
+
+set service gui listen-address 10.10.50.1
+set service ssh listen-address 10.10.50.1
 
 set firewall all-ping enable
 set firewall broadcast-ping disable
@@ -30,55 +104,6 @@ set firewall receive-redirects disable
 set firewall send-redirects enable
 set firewall source-validation disable
 set firewall syn-cookies enable
-
-delete interfaces ethernet eth0 address
-set interfaces ethernet eth0 address dhcp
-set interfaces ethernet eth0 description WAN
-set interfaces ethernet eth0 mac AA:AA:AA:AA:AA:AA
-set interfaces ethernet eth0 dhcp-options client-option "send host-name &quot;VFHXXXXXXXXXX/XXXXXXXXX&quot;;"
-set service nat rule 5010 description "Masquerade from LAN to eth0 WAN"
-set service nat rule 5010 source address 10.10.0.0/16
-set service nat rule 5010 type masquerade
-set service nat rule 5010 outbound-interface eth0
-set service nat rule 5010 protocol all
-set service nat rule 5010 log disable
-
-delete interfaces ethernet eth4 address
-set interfaces ethernet eth4 address 10.10.50.1/24
-set interfaces ethernet eth4 description 'ERX_MANAGEMENT'
-set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 default-router 10.10.50.1
-set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 dns-server 8.8.8.8
-set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 start 10.10.50.10 stop 10.10.50.100
-set service dhcp-server shared-network-name ERX_MANAGEMENT description 'ERX_MANAGEMENT'
-set service dns forwarding listen-on eth4
-
-delete interfaces ethernet eth5 address
-set interfaces ethernet eth5 description 'TRUNK'
-set service dns forwarding listen-on eth5
-
-set interfaces ethernet eth5 vif 10 address 10.10.10.1/24
-set interfaces ethernet eth5 vif 10 description 'LAN'
-set service dhcp-server shared-network-name LAN description 'LAN'
-set service dhcp-server shared-network-name LAN subnet 10.10.10.0/24 default-router 10.10.10.1
-set service dhcp-server shared-network-name LAN subnet 10.10.10.0/24 dns-server 8.8.8.8
-set service dhcp-server shared-network-name LAN subnet 10.10.10.0/24 start 10.10.10.10 stop 10.10.10.100
-set service dns forwarding listen-on eth5.10
-
-set interfaces ethernet eth5 vif 20 address 10.10.20.1/24
-set interfaces ethernet eth5 vif 20 description 'WLAN'
-set service dhcp-server shared-network-name WLAN description 'WLAN'
-set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 default-router 10.10.20.1
-set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 dns-server 8.8.8.8
-set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 start 10.10.20.10 stop 10.10.20.100
-set service dns forwarding listen-on eth5.20
-
-set interfaces ethernet eth5 vif 30 address 10.10.30.1/24
-set interfaces ethernet eth5 vif 30 description 'WLAN_MANAGEMENT'
-set service dhcp-server shared-network-name WLAN_MANAGEMENT description 'WLAN_MANAGEMENT'
-set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 default-router 10.10.30.1
-set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 dns-server 8.8.8.8
-set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 start 10.10.30.10 stop 10.10.30.100
-set service dns forwarding listen-on eth5.30
 
 set firewall name WAN_IN
 set firewall name WAN_IN description 'WAN_IN'
@@ -117,9 +142,6 @@ set firewall name PROTECT_LOCAL rule 2 description 'Accept DHCP'
 set firewall name PROTECT_LOCAL rule 2 destination port 67
 set firewall name PROTECT_LOCAL rule 2 protocol udp
 set interfaces ethernet eth5 vif 20 firewall local name PROTECT_LOCAL
-
-set service gui listen-address 10.10.50.1
-set service ssh listen-address 10.10.50.1
 
 commit
 save

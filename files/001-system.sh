@@ -17,13 +17,14 @@ set system conntrack timeout tcp last-ack 10
 set system conntrack timeout tcp syn-recv 5
 set system conntrack timeout tcp syn-sent 5
 set system conntrack timeout tcp time-wait 10
-set system conntrack timeout udp other 10
+set system conntrack timeout udp other 30
 set system conntrack timeout udp stream 180
 
 set system offload hwnat enable
 
 set system host-name bastion
 set system name-server 8.8.8.8
+set system name-server 8.8.4.4
 set system time-zone Europe/Madrid
 
 commit
