@@ -18,7 +18,6 @@ set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 
 set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 dns-server 8.8.4.4
 set service dhcp-server shared-network-name ERX_MANAGEMENT subnet 10.10.50.0/24 start 10.10.50.10 stop 10.10.50.100
 set service dhcp-server shared-network-name ERX_MANAGEMENT description 'ERX_MANAGEMENT'
-set service dns forwarding listen-on eth4
 
 set service dhcp-server shared-network-name LAN description 'LAN'
 set service dhcp-server shared-network-name LAN subnet 10.10.10.0/24 default-router 10.10.10.1
@@ -38,6 +37,7 @@ set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24
 set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 dns-server 8.8.4.4
 set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 start 10.10.30.10 stop 10.10.30.100
 
+set service dns forwarding listen-on eth4
 set service dns forwarding listen-on eth5
 set service dns forwarding listen-on eth5.10
 set service dns forwarding listen-on eth5.20
