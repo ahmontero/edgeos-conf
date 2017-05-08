@@ -24,8 +24,6 @@ set firewall name WAN_IN rule 2 action drop
 set firewall name WAN_IN rule 2 description "Drop ICMP"
 set firewall name WAN_IN rule 2 protocol icmp
 set firewall name WAN_IN rule 2 icmp type 8
-set interfaces ethernet eth0 firewall in name WAN_IN
-set interfaces ethernet eth0 firewall local name WAN_IN
 
 set firewall name PROTECT_IN default-action accept
 set firewall name PROTECT_IN rule 1 action drop
@@ -34,11 +32,10 @@ set firewall name PROTECT_IN rule 1 destination address 10.10.0.0/16
 set firewall name PROTECT_IN rule 1 state new enable
 set firewall name PROTECT_IN rule 1 protocol all
 set firewall name PROTECT_IN rule 2 action drop
-set firewall name PROTECT_IN rule 2 description 'Drop new connections from WLAN to WANs LAN'
+set firewall name PROTECT_IN rule 2 description 'Drop new connections from WLAN to WAN'
 set firewall name PROTECT_IN rule 2 destination address 192.168.0.0/16
 set firewall name PROTECT_IN rule 2 state new enable
 set firewall name PROTECT_IN rule 2 protocol all
-set interfaces ethernet eth5 vif 20 firewall in name PROTECT_IN
 
 set firewall name PROTECT_LOCAL default-action drop
 set firewall name PROTECT_LOCAL rule 1 action accept
@@ -49,6 +46,10 @@ set firewall name PROTECT_LOCAL rule 2 action accept
 set firewall name PROTECT_LOCAL rule 2 description 'Accept DHCP'
 set firewall name PROTECT_LOCAL rule 2 destination port 67
 set firewall name PROTECT_LOCAL rule 2 protocol udp
+
+set interfaces ethernet eth0 firewall in name WAN_IN
+set interfaces ethernet eth0 firewall local name WAN_IN
+set interfaces ethernet eth5 vif 20 firewall in name PROTECT_IN
 set interfaces ethernet eth5 vif 20 firewall local name PROTECT_LOCAL
 
 commit
