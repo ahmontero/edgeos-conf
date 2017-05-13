@@ -149,6 +149,10 @@ set firewall name PROTECT_LOCAL rule 3 action accept
 set firewall name PROTECT_LOCAL rule 3 description 'Accept SNMP'
 set firewall name PROTECT_LOCAL rule 3 destination port 161
 set firewall name PROTECT_LOCAL rule 3 protocol udp
+set firewall name PROTECT_LOCAL rule 4 action accept
+set firewall name PROTECT_LOCAL rule 4 description 'Accept Syslog'
+set firewall name PROTECT_LOCAL rule 4 destination port 514
+set firewall name PROTECT_LOCAL rule 4 protocol udp
 
 set interfaces ethernet eth0 firewall in name WAN_IN
 set interfaces ethernet eth0 firewall local name WAN_IN
