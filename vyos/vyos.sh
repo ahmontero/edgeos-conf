@@ -19,9 +19,11 @@ set system conntrack timeout tcp time-wait 10
 set system conntrack timeout udp other 30
 set system conntrack timeout udp stream 180
 set system host-name bastionx86
-set system name-server 8.8.8.8
 set system name-server 8.8.4.4
+set system name-server 8.8.8.8
+set system syslog host 10.10.10.12 facility local3 level info
 set system time-zone Europe/Madrid
+
 
 delete interfaces ethernet eth0 address
 set interfaces ethernet eth0 address dhcp
@@ -84,14 +86,22 @@ set service dns forwarding listen-on eth1
 set service dns forwarding name-server 8.8.8.8
 set service dns forwarding name-server 8.8.4.4
 
+set service snmp community vyos
+set service snmp community vyos client 10.10.10.14
+set service snmp community vyos authorization rw
+set service snmp trap-target 10.10.10.14
+set service snmp contact "Contact"
+set service snmp description "Vyos"
+set service snmp location "Location"
+
+set service ssh
+set service ssh listen-address 10.10.10.1
+set service ssh port 22
+
 set nat source rule 1 description "Masquerade from LAN to eth0 WAN"
 set nat source rule 1 outbound-interface eth0
 set nat source rule 1 source address 10.10.0.0/16
 set nat source rule 1 translation address masquerade
-
-set service ssh
-set service ssh listen-address 10.10.60.1
-set service ssh port 22
 
 set firewall all-ping enable
 set firewall broadcast-ping disable
