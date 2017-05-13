@@ -112,8 +112,6 @@ set firewall send-redirects enable
 set firewall source-validation disable
 set firewall syn-cookies enable
 
-set firewall options mss-clamp mss 1492
-
 set firewall name WAN_IN
 set firewall name WAN_IN description 'WAN_IN'
 set firewall name WAN_IN default-action drop
