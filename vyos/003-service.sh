@@ -22,10 +22,8 @@ set service dns forwarding name-server 8.8.4.4
 set service dns forwarding cache-size 0
 set service dns forwarding listen-on eth1
 
-set service snmp community vyos
-set service snmp community vyos client 10.10.10.14
 set service snmp community vyos authorization ro
-set service snmp trap-target 10.10.10.14
+set service snmp listen-address 10.10.30.100
 
 set service ssh
 set service ssh listen-address 10.10.30.100
