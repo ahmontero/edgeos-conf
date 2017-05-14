@@ -9,7 +9,8 @@ set service dhcp-server shared-network-name LAN subnet 10.10.10.0/24 start 10.10
 
 set service dhcp-server shared-network-name WLAN description 'WLAN'
 set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 default-router 10.10.20.1
-set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 dns-server 10.10.20.1
+set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 dns-server 8.8.8.8
+set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 dns-server 8.8.4.4
 set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 start 10.10.20.10 stop 10.10.20.100
 
 set service dhcp-server shared-network-name MANAGEMENT description 'MANAGEMENT'

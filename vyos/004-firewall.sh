@@ -20,9 +20,6 @@ set firewall syn-cookies enable
 #set firewall state-policy related action accept
 #set firewall state-policy invalid action drop
 
-set firewall group network-group 'LAN_NET' network 10.10.0.0/16
-set firewall group network-group 'WAN_ROUTER_NET' network 192.168.0.0/16
-
 set firewall name WAN_IN default-action drop
 set firewall name WAN_IN rule 10 action accept
 set firewall name WAN_IN rule 10 state established enable
@@ -38,11 +35,11 @@ set firewall name WAN_LOCAL rule 20 icmp type-name echo-request
 
 set firewall name WLAN_IN default-action accept
 set firewall name WLAN_IN rule 10 action drop
-set firewall name WLAN_IN rule 10 source group network-group 'LAN_NET'
+set firewall name WLAN_IN rule 10 destination address 10.10.0.0/16
 set firewall name WLAN_IN rule 10 state new enable
 set firewall name WLAN_IN rule 10 protocol all
 set firewall name WLAN_IN rule 20 action drop
-set firewall name WLAN_IN rule 20 source group network-group 'WAN_ROUTER_NET'
+set firewall name WLAN_IN rule 20 destination address 192.168.0.0/16
 set firewall name WLAN_IN rule 20 state new enable
 set firewall name WLAN_IN rule 20 protocol all
 
