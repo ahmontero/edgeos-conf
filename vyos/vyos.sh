@@ -48,7 +48,7 @@ set interfaces ethernet eth1 vif 20 description 'WLAN'
 
 delete interfaces ethernet eth1 vif 30 address
 set interfaces ethernet eth1 vif 30 address 10.10.30.1/24
-set interfaces ethernet eth1 vif 30 description 'WLAN_MANAGEMENT'
+set interfaces ethernet eth1 vif 30 description 'MANAGEMENT'
 
 set interfaces ethernet eth0 mtu 1500
 set interfaces ethernet eth1 mtu 1500         
@@ -76,11 +76,11 @@ set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 dns-server
 set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 dns-server 8.8.4.4
 set service dhcp-server shared-network-name WLAN subnet 10.10.20.0/24 start 10.10.20.10 stop 10.10.20.100
 
-set service dhcp-server shared-network-name WLAN_MANAGEMENT description 'WLAN_MANAGEMENT'
-set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 default-router 10.10.30.1
-set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 dns-server 8.8.8.8
-set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 dns-server 8.8.4.4
-set service dhcp-server shared-network-name WLAN_MANAGEMENT subnet 10.10.30.0/24 start 10.10.30.10 stop 10.10.30.100
+set service dhcp-server shared-network-name MANAGEMENT description 'MANAGEMENT'
+set service dhcp-server shared-network-name MANAGEMENT subnet 10.10.30.0/24 default-router 10.10.30.1
+set service dhcp-server shared-network-name MANAGEMENT subnet 10.10.30.0/24 dns-server 8.8.8.8
+set service dhcp-server shared-network-name MANAGEMENT subnet 10.10.30.0/24 dns-server 8.8.4.4
+set service dhcp-server shared-network-name MANAGEMENT subnet 10.10.30.0/24 start 10.10.30.10 stop 10.10.30.100
 
 set service dns forwarding listen-on eth1
 set service dns forwarding name-server 8.8.8.8
