@@ -24,6 +24,9 @@ set system name-server 8.8.8.8
 set system syslog host 10.10.10.14 facility all level info
 set system time-zone Europe/Madrid
 
+# Fix for error "INIT: Id "TO" respawning too fast: disabled for 5 minutes"
+delete system console device ttyS0
+
 commit
 save
 exit
